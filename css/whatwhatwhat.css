@@ -1,0 +1,43 @@
+body{
+  background: none;
+  background-color: #5571A2;
+  background-size: cover;
+}
+#box{
+  width: 40%;
+  margin: 140px auto 0;
+}
+#me{
+
+}
+.you{
+  color: #fb8ec0;
+}
+#you.me{
+  color: #000;
+  background-color: #fde89a;
+}
+#us{
+  padding-left: 20px;
+}
+#you{
+  width: 100%;
+  border: none;
+  padding: 5px;
+  background-color: #fb8ec0;
+}
+#footer{
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+#footer a{
+  display:block;
+  text-align:center;
+  color: #5571A2;
+}
+#footer a:hover{
+  color: yellow;
+}
+
