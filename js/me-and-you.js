@@ -1,32 +1,61 @@
 $(function(){
-  //clippy.load('Merlin', function(agent) {
-    //agent.show();
-    //function music(){
-      //agent.speak("Oh!");
-      //agent.speak("What's that?!") ;
-      //agent.play("StartListening");
-      //agent.speak("That must be our community radio station, courtesy of ~maze");
-      //agent.play("StartListening");
-      //var radio = document.createElement('iframe');
-      //radio.src = '/~maze/radio.html';
-      //radio.height = 0;
-      //radio.width = 0;
-      //document.getElementsByTagName('body')[0].appendChild(radio);
-    //}
 
-    //agent.speak("Hi");
-  //});
+  var convo = new (function(){
+    var db = "https://owise1.cloudant.com/convo";
+    var doc = {
+      convo : []
+    };
+    var isMe = true; // I speak first 
+
+    this.whoSay= function(who, what){
+      $('#us').append($('<li>').addClass(who).text(what));
+    }
+
+    this.say = function(what){
+      if(what === '') return;
+      if(isMe){
+        this.whoSay('me', what);
+      } else {
+        this.whoSay('you', what);
+      }
+      isMe = !isMe;
+
+      // save the convo
+      doc.convo.push(what);
+      if(doc.convo.length < 2) return;
+      var ajaxOpts = {
+        data : JSON.stringify(doc),
+        dataType : 'json',
+        contentType: "application/json",
+        xhrFields: {
+          withCredentials:true
+        }
+      }
+      if(doc._id){
+        ajaxOpts.url  = db + '/' + doc._id;
+        ajaxOpts.type = 'put';
+      } else {
+        ajaxOpts.url  = db;
+        ajaxOpts.type = 'post';
+      }
+      $.ajax(ajaxOpts)
+      .done(function(res){
+        if(res.ok){
+          doc._id  = res.id;
+          doc._rev = res.rev;
+        }
+        console.log(res);
+      });
+    }
+  })();
+
   var allClicks = $('div').asEventStream('click');
   var codeStream = $('#you').asEventStream('keyup')
                       .map(R.prop('keyCode'))
 
   var returns = codeStream.filter(R.eq(13));
-  var convo= new (function(){
-    this.say = function(who, what){
-      $('#us').append($('<li>').addClass(who).text(what));
-    }
-  })();
-  convo.say('me', "How's it going?");
+
+  convo.say("How's it going?");
 
   var text = $('#you')
     .asEventStream('keydown')
@@ -34,25 +63,9 @@ $(function(){
     .map(R.path('target.value'))
     .skipDuplicates();
 
-  var clickLocations = allClicks.map(function(ev){
-    return { x : ev.pageX, y : ev.pageY };
-  })
-
-  var clickIDs = allClicks.map(function(ev){
-    console.log($(ev.target).css('background'));
-  });
-  
   returns.onValue(function(){
-    var $you = $('#you');
-    if($you.val() === '') return;
-    if($you.is('.me')){
-      $you.removeClass('me');
-      convo.say('me', $you.val());
-    } else {
-      convo.say('you', $you.val());
-      $you.addClass('me');
-    }
-    $you.val('');
+    convo.say($('#you').val());
+    $('#you').val('');
   });
 
   var you = returns;
