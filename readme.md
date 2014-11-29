@@ -1,6 +1,6 @@
 # Conversation
 
-A computer you can chat with.
+A computer you can chat with.  [demo](http://totallynuclear.club/~owise1/convo/)
 
 I heard that the way Google Translate can translate text from one language to another is not because Google engineers have discovered the underlying, fundamental building blocks of human language and turned that into a computer algorithm. In fact, the google algorithm has nothing to do with the types of things an academic linguist might study. 
 
