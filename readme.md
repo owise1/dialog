@@ -21,7 +21,12 @@ I'm not sure that anecdote is even true, but I like the sound of it, so this is 
 I'm not 100% sure how this should be designed but here are some thoughts:
 
 * Distributed & Decentralized - It should be easy to run your own conversation server and they should be able to locate each other.  Size should not conern us.
-* Path-like structure - A good conversatino can take you anywhere, but the vast majority of them are pretty mundane.  I imagine a walk through the forest, where most will stick to the well-worn path, but there is always the possibility for the unexpected.
+* Path-like structure - A good conversation can take you anywhere, but the vast majority of them are pretty mundane.  I imagine a walk through the forest, where most will stick to the well-worn path, but there is always the possibility for the unexpected.
 * Dialogue - One-on-one conversations. There is the computer and you.
 * Retain Context - Wherever possible we should retain the location of the conversation, the original source, and context.
-* Human Input Only - Algorithms shouldn't be directly adding to the database.  Using an algorithms to locate and input human-created conversations is fine.
+* Human Input Only - Algorithms shouldn't be directly adding to the database.  Using algorithms to locate and input human-created conversations is fine.
+
+### Maybe...
+
+* instead of blogging, some people might find it more fun/comfortable to use express themselves via a dialogue
+* like a wikipedia editor ruthlessly presiding over her area of expertise, we might have a conversation overlord maintaining all possible answers to "Wait, what?"
