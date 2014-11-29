@@ -1,0 +1,24 @@
+{
+  "name": "conversation",
+  "version": "0.0.0",
+  "description": "a computer to chat with",
+  "main": "src/init.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/owise1/conversation.git"
+  },
+  "author": "@owise1",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owise1/conversation/issues"
+  },
+  "homepage": "https://github.com/owise1/conversation",
+  "devDependencies": {
+    "browserify": "^6.3.3",
+    "couchdb-seed-design": "0.0.5",
+    "nano": "^6.0.2"
+  }
+}
