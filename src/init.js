@@ -10,7 +10,7 @@ seed(db, {
         if(doc.convo){
           doc.convo.forEach(function(line, i){
             if(doc.convo[i+1]){
-              emit(line.split(" "), doc.convo[i+1]);
+              emit(line.toLowerCase().split(" "), doc.convo[i+1]);
             }
           });
         }
