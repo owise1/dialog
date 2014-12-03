@@ -1,6 +1,6 @@
-# Conversation
+# Dialog 
 
-A computer you can chat with.  [demo](http://totallynuclear.club/~owise1/convo/)
+A computer you can chat with.  [demo](http://totallynuclear.club/~owise1/dlog/)
 
 ### What if....
 
