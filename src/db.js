@@ -14,6 +14,24 @@ seed(db, {
             }
           });
         }
+      },
+      byLine : {
+        map : function(doc){
+          if(doc.convo){
+            emit(doc.convo);
+          }
+        },
+        reduce : "_count"
+      },
+      byTime : function(doc){
+        if(doc.convo){
+          emit(doc.time, doc._id);
+        }
+      },
+      questionsByTime : function(doc){
+        if(doc.convo && /\?$/.test(doc.convo[(doc.convo.length-1)])){
+          emit(doc.time, doc._id);
+        }
       }
     }
   }

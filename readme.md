@@ -28,5 +28,5 @@ I'm not 100% sure how this should be designed but here are some thoughts:
 
 ### Maybe...
 
-* instead of speaking to an unknown pubic, blogging, some people might find it more fun/comfortable to express themselves via a dialogue
+* [Dlog For Fun](docs/dlogging.md) - instead of pontificating for an unknown pubic (blogging), some people might find it more fun/comfortable to express themselves via a dialogue
 * like a wikipedia editor ruthlessly presiding over their treasure of expertise, we might have a conversation overlord maintaining all possible answers to "Wait, what?"

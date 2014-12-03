@@ -1,15 +1,41 @@
 $(function(){
 
   var convo = new (function(){
-    var db = "https://owise1.cloudant.com/convo";
-    var doc = {
-      convo : []
-    };
-    var possibs = [];
-    var isMe = true; // I speak first 
+    var that = this;
+    var db   = "https://owise1.cloudant.com/convo";
+    var doc, possibs, isMe;
+
+    function reset(){
+      doc  = {
+        convo : []
+      };
+      possibs = [];
+      isMe = true; // I speak first 
+    }
+    reset();
 
     this.whoSay = function(who, what){
       $('#us').append($('<li>').addClass(who).text(what));
+    }
+
+    var _loading = false;
+    this.load = function(){
+      var id = window.location.hash.replace('#', '');
+      if(id === '') return;
+      _loading = true;
+      doc.convo = [];
+      $.ajax({
+        url : db + '/' + id,
+        dataType : 'json',
+      })
+      .done(function(res){
+        $('#us').html('');
+        res.convo.forEach(that.say.bind(that));
+        _loading = false;
+      })
+      .fail(function(){
+        window.location.hash = '';
+      });
     }
 
     this.say = function(what){
@@ -23,6 +49,8 @@ $(function(){
 
       doc.convo.push(what);
 
+      if(_loading) return;
+
       // is there an answer?
       if(possibs.length > 0){
         var answer = possibs[0];
@@ -32,6 +60,7 @@ $(function(){
 
       // save the convo
       if(doc.convo.length < 2) return;
+      doc.time = Date.now();
       var ajaxOpts = {
         data : JSON.stringify(doc),
         dataType : 'json',
@@ -40,18 +69,13 @@ $(function(){
           withCredentials:true
         }
       }
-      if(doc._id){
-        ajaxOpts.url  = db + '/' + doc._id;
-        ajaxOpts.type = 'put';
-      } else {
-        ajaxOpts.url  = db;
-        ajaxOpts.type = 'post';
-      }
+      ajaxOpts.url  = db;
+      ajaxOpts.type = 'post';
+
       $.ajax(ajaxOpts)
       .done(function(res){
         if(res.ok){
-          doc._id  = res.id;
-          doc._rev = res.rev;
+          $('#us li:last').append(" <a href='#"+res.id+"'>>></a>");
         }
       });
 
@@ -76,6 +100,7 @@ $(function(){
   var allClicks  = $('div').asEventStream('click');
   var codeStream = $('#you').asEventStream('keyup')
                       .map(R.prop('keyCode'))
+  var hashChanges = $(window).asEventStream('hashchange');
   var returns = codeStream.filter(R.eq(13));
   var spaces  = codeStream.filter(R.eq(32));
 
@@ -95,6 +120,9 @@ $(function(){
     convo.say($('#you').val());
     $('#you').val('');
   });
+
+  hashChanges.onValue(convo.load);
+  convo.load();
 
   //var you = codeStream;
   //you.onValue(function(a){
