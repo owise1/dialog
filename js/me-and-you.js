@@ -18,10 +18,27 @@ $(function(){
       $('#us').append($('<li>').addClass(who).text(what));
     }
 
+    this.fetchQuestion = function(){
+      $.ajax({
+        url : db + "/_design/convo/_view/questionsByTime",
+        data : {
+          descending : true,
+          limit : 1
+        },
+        dataType : 'json'
+      })
+      .done(function(res){
+        if(res.rows[0]){
+          window.location.hash = res.rows[0].value;
+        }
+      });
+    }
+
     var _loading = false;
-    this.load = function(){
+    this.load = function(initialLoad){
+      initialLoad = initialLoad === true;
       var id = window.location.hash.replace('#', '');
-      if(id === '') return;
+      if(id === '') return initialLoad ? this.fetchQuestion() : false;
       _loading = true;
       doc.convo = [];
       $.ajax({
@@ -34,6 +51,7 @@ $(function(){
         _loading = false;
       })
       .fail(function(){
+        if(initialLoad) return this.fetchQuestion();
         window.location.hash = '';
       });
     }
@@ -104,7 +122,6 @@ $(function(){
   var returns = codeStream.filter(R.eq(13));
   var spaces  = codeStream.filter(R.eq(32));
 
-  convo.say("How's it going?");
 
   var text = $('#you')
     .asEventStream('keydown')
@@ -122,7 +139,8 @@ $(function(){
   });
 
   hashChanges.onValue(convo.load);
-  convo.load();
+
+  convo.load(true);
 
   //var you = codeStream;
   //you.onValue(function(a){
