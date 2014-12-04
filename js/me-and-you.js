@@ -11,6 +11,7 @@ $(function(){
       };
       possibs = [];
       isMe = true; // I speak first 
+      $('#us').html('');
     }
     reset();
 
@@ -38,7 +39,7 @@ $(function(){
     this.load = function(initialLoad){
       initialLoad = initialLoad === true;
       var id = window.location.hash.replace('#', '');
-      if(id === '') return initialLoad ? this.fetchQuestion() : false;
+      if(id === '') return initialLoad ? this.fetchQuestion() : reset();
       _loading = true;
       doc.convo = [];
       $.ajax({
@@ -46,7 +47,7 @@ $(function(){
         dataType : 'json',
       })
       .done(function(res){
-        $('#us').html('');
+        reset();
         res.convo.forEach(that.say.bind(that));
         _loading = false;
       })
